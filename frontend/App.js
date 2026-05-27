@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Platform } from 'react-native';
 // Import Screens
+import LandingScreen from './src/screens/LandingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import DomainPicker from './src/screens/DomainPicker';
@@ -23,10 +24,11 @@ export default function App() {
       style.id = 'web-scroll-override';
       style.textContent = `
         html, body, #root {
-          height: auto !important;
+          height: 100% !important;
           min-height: 100% !important;
+          margin: 0;
+          padding: 0;
           overflow: auto !important;
-          overflow-y: auto !important;
         }
       `;
       document.head.appendChild(style);
@@ -34,16 +36,19 @@ export default function App() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, minHeight: Platform.OS === 'web' ? '100vh' : '100%' }}>
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator 
-            initialRouteName="Login"
+            initialRouteName="Landing"
             screenOptions={{
               headerShown: false,
               cardStyle: { backgroundColor: '#FFEFE5' }
             }}
           >
+            {/* Landing & Gateways */}
+            <Stack.Screen name="Landing" component={LandingScreen} />
+            
             {/* Authentication Flow */}
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
