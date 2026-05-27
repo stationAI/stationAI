@@ -5,12 +5,12 @@ export default function OrangeLayout({ children, title, subtitle, showHeader = t
   // Use native browser window scrollbar on Web (by using View instead of ScrollView), and ScrollView on mobile devices
   const Container = (scrollable && Platform.OS !== 'web') ? ScrollView : View;
   
-  // Bounded safeArea: allow natural window scrolling when scrollable is true, and lock to viewport when scrollable is false (e.g. Trainee Workspace dashboard)
+  // Bounded safeArea: allow natural window scrolling when scrollable is true, and lock to viewport when scrollable is false
   const safeAreaStyle = [
     styles.safeArea,
     Platform.OS === 'web' && (scrollable 
-      ? { height: 'auto', minHeight: '100%' } 
-      : { height: '100%', overflow: 'hidden' })
+      ? { minHeight: '100vh' } 
+      : { height: '100vh', overflow: 'hidden' })
   ];
   
   return (
@@ -99,12 +99,6 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-    ...Platform.select({
-      web: {
-        height: 'auto',
-        overflow: 'visible',
-      }
-    })
   },
   scrollContent: {
     padding: 20,
