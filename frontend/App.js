@@ -36,7 +36,7 @@ export default function App() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, minHeight: Platform.OS === 'web' ? '100vh' : '100%' }}>
+    <GestureHandlerRootView style={{ flex: 1, minHeight: Platform.OS === 'web' ? '100%' : '100%' }}>
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator 

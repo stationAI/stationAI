@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     padding: 20,
     ...Platform.select({
       web: {
-        minHeight: '100vh',
+        minHeight: '100%',
       }
     })
   },
