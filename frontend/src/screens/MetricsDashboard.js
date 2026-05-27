@@ -111,45 +111,39 @@ export default function MetricsDashboard({ navigation }) {
                 <Text style={styles.exportBtnText}>📄 Export Audit Logs</Text>
               </TouchableOpacity>
             </View>
-            
-            <FlatList
-              data={trainees}
-              keyExtractor={(item) => item.id}
-              scrollEnabled={false}
-              renderItem={({ item }) => (
-                <View style={styles.traineeCard}>
-                  <View style={styles.traineeCardHeader}>
-                    <View style={styles.traineeMeta}>
-                      <View style={[styles.statusDot, item.active ? styles.activeDot : styles.inactiveDot]} />
-                      <Text style={styles.traineeName}>{item.name}</Text>
-                      <Text style={styles.stationBadge}>{item.station} Station</Text>
-                    </View>
-                    <Text style={styles.timeSpent}>{item.timeSpent} training</Text>
+            {trainees.map((item) => (
+              <View key={item.id} style={styles.traineeCard}>
+                <View style={styles.traineeCardHeader}>
+                  <View style={styles.traineeMeta}>
+                    <View style={[styles.statusDot, item.active ? styles.activeDot : styles.inactiveDot]} />
+                    <Text style={styles.traineeName}>{item.name}</Text>
+                    <Text style={styles.stationBadge}>{item.station} Station</Text>
                   </View>
-                  
-                  <View style={styles.traineeQueryContainer}>
-                    <Text style={styles.queryLabel}>Last Session Query:</Text>
-                    <Text style={styles.queryText}>"{item.lastQuestion}"</Text>
-                  </View>
-                  
-                  <View style={styles.traineeActions}>
-                    <Text style={styles.coachAnswerLabel}>Coach answer correct?</Text>
-                    <TouchableOpacity 
-                      style={[
-                        styles.flagButton, 
-                        flaggedSessions.has(item.id) && styles.flagButtonDisabled
-                      ]} 
-                      onPress={() => handleFlagResponse(item.id)}
-                      disabled={flaggedSessions.has(item.id)}
-                    >
-                      <Text style={styles.flagButtonText}>
-                        {flaggedSessions.has(item.id) ? '👎 Flagged' : '👎 Report Error'}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                  <Text style={styles.timeSpent}>{item.timeSpent} training</Text>
                 </View>
-              )}
-            />
+                
+                <View style={styles.traineeQueryContainer}>
+                  <Text style={styles.queryLabel}>Last Session Query:</Text>
+                  <Text style={styles.queryText}>"{item.lastQuestion}"</Text>
+                </View>
+                
+                <View style={styles.traineeActions}>
+                  <Text style={styles.coachAnswerLabel}>Coach answer correct?</Text>
+                  <TouchableOpacity 
+                    style={[
+                      styles.flagButton, 
+                      flaggedSessions.has(item.id) && styles.flagButtonDisabled
+                    ]} 
+                    onPress={() => handleFlagResponse(item.id)}
+                    disabled={flaggedSessions.has(item.id)}
+                  >
+                    <Text style={styles.flagButtonText}>
+                      {flaggedSessions.has(item.id) ? '👎 Flagged' : '👎 Report Error'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
           </View>
 
           {/* Right Column: Assistant settings & Headset paired state */}
