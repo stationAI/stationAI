@@ -39,7 +39,7 @@ export default function DomainPicker({ navigation }) {
 
   const handlePress = (domain) => {
     if (domain.active) {
-      navigation.navigate("MenuScreen");
+      navigation.navigate("Menu");
     }
   };
 

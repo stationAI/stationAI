@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, ActivityIndicator } from 'react-native';
 import OrangeLayout from '../components/OrangeLayout';
+import { showAlert } from '../utils/alert';
 
 export default function AdminScreen({ navigation }) {
   const [activeTab, setActiveTab] = useState('tenants'); // 'tenants', 'models', 'deploy', 'audits'
@@ -36,13 +37,13 @@ export default function AdminScreen({ navigation }) {
       setTenants(prev => [...prev, newTenant]);
       setNewRestaurantName('');
       setLoading(false);
-      Alert.alert("Tenant Added", `Successfully registered ${newRestaurantName} under ${newTier} billing tier.`);
+      showAlert("Tenant Added", `Successfully registered ${newRestaurantName} under ${newTier} billing tier.`);
     }, 800);
   };
 
   const handleTriggerRollback = () => {
     setCanaryWeight(0);
-    Alert.alert(
+    showAlert(
       "CANARY ROLLBACK",
       "Immediate rollback command executed. All active trainee connections successfully routed back to the stable production container.",
       [{ text: "OK" }]

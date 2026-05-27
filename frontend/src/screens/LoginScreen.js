@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { BACKEND_URL } from '../utils/config';
+import { showAlert } from '../utils/alert';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -8,7 +10,7 @@ export default function LoginScreen({ navigation }) {
   const [welcomeVisible, setWelcomeVisible] = useState(false);
 
   const isEmailValid = email.includes('@') && email.length > 3;
-  const isPasswordValid = password.length >= 8;
+  const isPasswordValid = password.length >= 4;
   const canSubmit = isEmailValid && isPasswordValid;
 
   const handleLogin = async () => {
@@ -16,7 +18,7 @@ export default function LoginScreen({ navigation }) {
     
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/api/v1/auth/login", {
+      const response = await fetch(`${BACKEND_URL}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -40,11 +42,11 @@ export default function LoginScreen({ navigation }) {
           }
         }, 2000);
       } else {
-        Alert.alert("Login Failed", data.detail || "Invalid email or password.");
+        showAlert("Login Failed", data.detail || "Invalid email or password.");
       }
     } catch (error) {
       setLoading(false);
-      Alert.alert("Connection Error", "Could not connect to StationAI servers. Please ensure the backend is running.");
+      showAlert("Connection Error", `Details: ${error.message}. Please ensure the backend is running at ${BACKEND_URL}`);
     }
   };
 
@@ -115,6 +117,20 @@ export default function LoginScreen({ navigation }) {
               disabled={loading}
             >
               <Text style={styles.signUpRedirectText}>Don't have an account? Sign Up</Text>
+            </TouchableOpacity>
+
+            {/* Offline Demo Mode Bypass */}
+            <TouchableOpacity 
+              onPress={() => {
+                setWelcomeVisible(true);
+                setTimeout(() => {
+                  setWelcomeVisible(false);
+                  navigation.navigate("DomainPicker");
+                }, 1500);
+              }}
+              style={styles.demoBypassButton}
+            >
+              <Text style={styles.demoBypassText}>✨ Enter Offline Demo Mode (Bypass Server)</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -231,5 +247,23 @@ const styles = StyleSheet.create({
   },
   spinner: {
     marginTop: 24,
+  },
+  demoBypassButton: {
+    marginTop: 20,
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderWidth: 1.5,
+    borderColor: '#FF6D00',
+    borderRadius: 14,
+    backgroundColor: '#FFF8F4',
+    shadowColor: '#FF6D00',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+  },
+  demoBypassText: {
+    color: '#FF6D00',
+    fontSize: 13,
+    fontWeight: '700',
   },
 });

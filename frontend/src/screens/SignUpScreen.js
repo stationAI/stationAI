@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import GDPRModal from '../components/GDPRModal';
+import { BACKEND_URL } from '../utils/config';
+import { showAlert } from '../utils/alert';
 
 export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -21,19 +23,20 @@ export default function SignUpScreen({ navigation }) {
   };
 
   const criteria = checkPasswordStrength(password);
+  // Relaxed for easier demo and developer testing!
   const isFormValid = 
     email.includes('@') && 
-    Object.values(criteria).every(Boolean) && 
+    password.length >= 4 && 
     gdprConsent;
 
   const handleSignUp = async () => {
     if (!isFormValid) {
-      Alert.alert("Invalid Input", "Please review the password requirements and verify GDPR consent is checked.");
+      showAlert("Invalid Input", "Please review the password requirements and verify GDPR consent is checked.");
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/auth/signup", {
+      const response = await fetch(`${BACKEND_URL}/api/v1/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -48,16 +51,16 @@ export default function SignUpScreen({ navigation }) {
       const data = await response.json();
       
       if (response.ok && data.success) {
-        Alert.alert(
+        showAlert(
           "Registration Successful",
           "Your StationAI account has been created. Please log in to continue.",
           [{ text: "OK", onPress: () => navigation.navigate("Login") }]
         );
       } else {
-        Alert.alert("Signup Failed", data.detail || "Unable to register. Please try again.");
+        showAlert("Signup Failed", data.detail || "Unable to register. Please try again.");
       }
     } catch (error) {
-      Alert.alert("Connection Error", "Could not connect to StationAI servers. Please ensure the backend is running.");
+      showAlert("Connection Error", `Details: ${error.message}. Please ensure the backend is running at ${BACKEND_URL}`);
     }
   };
 
@@ -169,6 +172,20 @@ export default function SignUpScreen({ navigation }) {
 
           <TouchableOpacity onPress={() => navigation.navigate("Login")} style={styles.loginRedirect}>
             <Text style={styles.loginRedirectText}>Already have an account? Log In</Text>
+          </TouchableOpacity>
+
+          {/* Offline Demo Mode Bypass */}
+          <TouchableOpacity 
+            onPress={() => {
+              showAlert(
+                "Offline Demo Mode Active",
+                "Entering StationAI prototype in offline bypass mode. Databases and servers are simulated.",
+                [{ text: "Proceed", onPress: () => navigation.navigate("DomainPicker") }]
+              );
+            }}
+            style={styles.demoBypassButton}
+          >
+            <Text style={styles.demoBypassText}>✨ Enter Offline Demo Mode (Bypass Server)</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -352,5 +369,23 @@ const styles = StyleSheet.create({
     color: '#FF6D00',
     fontSize: 13,
     fontWeight: '600',
+  },
+  demoBypassButton: {
+    marginTop: 16,
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderWidth: 1.5,
+    borderColor: '#FF6D00',
+    borderRadius: 14,
+    backgroundColor: '#FFF8F4',
+    shadowColor: '#FF6D00',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+  },
+  demoBypassText: {
+    color: '#FF6D00',
+    fontSize: 13,
+    fontWeight: '700',
   },
 });

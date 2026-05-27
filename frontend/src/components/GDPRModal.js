@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 
 export default function GDPRModal({ visible, onClose, onAccept }) {
+  if (!visible) return null;
   return (
     <Modal
       animationType="fade"
@@ -64,7 +65,7 @@ export default function GDPRModal({ visible, onClose, onAccept }) {
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(26, 12, 4, 0.6)', # Subtle premium dark translucent background
+    backgroundColor: 'rgba(26, 12, 4, 0.6)', // Subtle premium dark translucent background
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   modalContent: {
     width: '100%',
     maxWidth: 480,
-    backgroundColor: '#FFFBF7', # Premium warm off-white cream tone
+    backgroundColor: '#FFFBF7', // Premium warm off-white cream tone
     borderRadius: 20,
     padding: 24,
     shadowColor: '#DD5A00',
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#3B1800', # Deep chocolate text
+    color: '#3B1800', // Deep chocolate text
     marginBottom: 16,
     textAlign: 'center',
     fontFamily: 'System',
@@ -99,14 +100,14 @@ const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#DD5A00', # Harmonious rich orange
+    color: '#DD5A00', // Harmonious rich orange
     marginTop: 12,
     marginBottom: 4,
     fontFamily: 'System',
   },
   textBody: {
     fontSize: 12,
-    color: '#553622', # Warm grey/brown body
+    color: '#553622', // Warm grey/brown body
     lineHeight: 18,
     fontFamily: 'System',
     marginBottom: 8,
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
     borderColor: '#FFD3B8',
   },
   acceptButton: {
-    backgroundColor: '#FF6D00', # Rich vibrant orange
+    backgroundColor: '#FF6D00', // Rich vibrant orange
     shadowColor: '#FF6D00',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Dimensions, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Dimensions, ActivityIndicator } from 'react-native';
 import OrangeLayout from '../components/OrangeLayout';
+import { showAlert } from '../utils/alert';
 
 const { width } = Dimensions.get('window');
 const isWeb = width > 768;
@@ -25,14 +26,14 @@ export default function MetricsDashboard({ navigation }) {
       // Mock network latency or actual update if tenant context is loaded
       setTimeout(() => {
         setSavingSettings(false);
-        Alert.alert(
+        showAlert(
           "Settings Saved", 
           `Voice assistant configured as: "${coachName}". Trainees can wake Coach by saying: "${wakeWord}".`
         );
       }, 800);
     } catch (error) {
       setSavingSettings(false);
-      Alert.alert("Error", "Failed to update voice configuration settings.");
+      showAlert("Error", "Failed to update voice configuration settings.");
     }
   };
 
@@ -46,7 +47,7 @@ export default function MetricsDashboard({ navigation }) {
       return updated;
     });
 
-    Alert.alert(
+    showAlert(
       "Response Flagged",
       "This question and answer have been flagged and sent to your Feedback Store. Sasi and Kartik will audit this in your weekly Golden Test Set.",
       [{ text: "OK" }]
@@ -54,7 +55,7 @@ export default function MetricsDashboard({ navigation }) {
   };
 
   const handleExportLogs = () => {
-    Alert.alert("Compliance Export", "UK Food Safety Audit logs successfully generated and emailed as a secure PDF.");
+    showAlert("Compliance Export", "UK Food Safety Audit logs successfully generated and emailed as a secure PDF.");
   };
 
   return (
@@ -66,13 +67,13 @@ export default function MetricsDashboard({ navigation }) {
       <View style={styles.dashboardContainer}>
         {/* Navigation Breadcrumb & Actions Header */}
         <View style={styles.breadcrumbHeader}>
-          <TouchableOpacity onPress={() => navigation.navigate("MenuScreen")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Menu")}>
             <Text style={styles.breadcrumbLink}>← Back to Modules</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
             style={styles.uploadCTA} 
-            onPress={() => navigation.navigate("UploadScreen")}
+            onPress={() => navigation.navigate("Upload")}
           >
             <Text style={styles.uploadCTAText}>+ Ingest Training Material</Text>
           </TouchableOpacity>
@@ -202,7 +203,7 @@ export default function MetricsDashboard({ navigation }) {
 
               <TouchableOpacity 
                 style={styles.bluetoothBtn}
-                onPress={() => Alert.alert("Bluetooth pairing", "Headset scan initiated. Please turn on your Shokz OpenComm 2 in pairing mode.")}
+                onPress={() => showAlert("Bluetooth pairing", "Headset scan initiated. Please turn on your Shokz OpenComm 2 in pairing mode.")}
               >
                 <Text style={styles.bluetoothBtnText}>🔌 Pair Headset to Dashboard</Text>
               </TouchableOpacity>

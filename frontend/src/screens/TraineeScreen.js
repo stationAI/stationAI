@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Dimensions, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Dimensions, ScrollView } from 'react-native';
 import OrangeLayout from '../components/OrangeLayout';
 import WaveVisualizer from '../components/WaveVisualizer';
+import { showAlert } from '../utils/alert';
 
 const { width } = Dimensions.get('window');
 const isWeb = width > 768;
@@ -75,7 +76,7 @@ export default function TraineeScreen({ navigation }) {
 
     } catch (e) {
       setSessionState('paused');
-      Alert.alert("STT Error", "Noise levels exceed VAD limits. Transitioning to fallback Text Mode.");
+      showAlert("STT Error", "Noise levels exceed VAD limits. Transitioning to fallback Text Mode.");
       setTextMode(true);
     }
   };
@@ -99,7 +100,7 @@ export default function TraineeScreen({ navigation }) {
 
   const handleExitPress = () => {
     setSessionState('paused');
-    Alert.alert(
+    showAlert(
       "Session Completed",
       "Goodbye Coach! Your session has been closed and successfully saved to Supabase.",
       [{ text: "OK", onPress: () => navigation.navigate("Login") }]

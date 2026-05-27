@@ -5,8 +5,8 @@ from typing import Optional
 
 class Settings(BaseSettings):
     # Supabase Connection
-    SUPABASE_URL: str = Field(..., env="SUPABASE_URL")
-    SUPABASE_KEY: str = Field(..., env="SUPABASE_KEY")
+    SUPABASE_URL: str = Field("https://ryzojlkwxvtrofdbrwzx.supabase.co", env="SUPABASE_URL")
+    SUPABASE_KEY: str = Field("mock_supabase_key_for_immediate_demo_mode", env="SUPABASE_KEY")
     
     # Redis Cache & Sessions
     REDIS_URL: str = Field("redis://localhost:6379/0", env="REDIS_URL")

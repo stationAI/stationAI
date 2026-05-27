@@ -27,23 +27,11 @@ class SignUpRequest(BaseModel):
     @classmethod
     def validate_password_strength(cls, v: str) -> str:
         """
-        Enforces password rules:
-        - Minimum 8 characters
-        - At least one uppercase letter
-        - At least one lowercase letter
-        - At least one number
-        - At least one special character
+        Relaxed password rules for Demo/Testing:
+        - Minimum 4 characters
         """
-        if len(v) < 8:
-            raise ValueError("Password must be at least 8 characters long")
-        if not re.search(r"[A-Z]", v):
-            raise ValueError("Password must contain at least one uppercase letter")
-        if not re.search(r"[a-z]", v):
-            raise ValueError("Password must contain at least one lowercase letter")
-        if not re.search(r"\d", v):
-            raise ValueError("Password must contain at least one number")
-        if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", v):
-            raise ValueError("Password must contain at least one special character")
+        if len(v) < 4:
+            raise ValueError("Password must be at least 4 characters long")
         return v
 
     @field_validator("role")

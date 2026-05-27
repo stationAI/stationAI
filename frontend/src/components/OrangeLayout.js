@@ -1,11 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity, ScrollView, Platform } from 'react-native';
 
 export default function OrangeLayout({ children, title, subtitle, showHeader = true, scrollable = true, onLogout }) {
   const Container = scrollable ? ScrollView : View;
   
+  // Constrain height on web so internal ScrollView scrolls correctly instead of stretching infinitely
+  const safeAreaStyle = [
+    styles.safeArea,
+    Platform.OS === 'web' && { height: '100vh', overflow: 'hidden' }
+  ];
+  
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={safeAreaStyle}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFEFE5" />
       
       {/* Dynamic Header */}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import OrangeLayout from '../components/OrangeLayout';
+import { showAlert } from '../utils/alert';
 
 export default function UploadScreen({ navigation }) {
   const [selectedStation, setSelectedStation] = useState('burger');
@@ -35,11 +36,11 @@ export default function UploadScreen({ navigation }) {
 
   const handleIngest = async () => {
     if (!file) {
-      Alert.alert("No File Selected", "Please select or drop a training manual file first.");
+      showAlert("No File Selected", "Please select or drop a training manual file first.");
       return;
     }
     if (!approved) {
-      Alert.alert("Review Required", "Please review and tick the checkbox to approve this training material.");
+      showAlert("Review Required", "Please review and tick the checkbox to approve this training material.");
       return;
     }
 
@@ -71,7 +72,7 @@ export default function UploadScreen({ navigation }) {
     } catch (error) {
       setUploading(false);
       setCurrentStep(0);
-      Alert.alert("Upload Failed", "An error occurred while parsing and embedding your training document. Please verify the format.");
+      showAlert("Upload Failed", "An error occurred while parsing and embedding your training document. Please verify the format.");
     }
   };
 
