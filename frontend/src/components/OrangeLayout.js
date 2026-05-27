@@ -9,8 +9,8 @@ export default function OrangeLayout({ children, title, subtitle, showHeader = t
   const safeAreaStyle = [
     styles.safeArea,
     Platform.OS === 'web' && (scrollable 
-      ? { height: 'auto', minHeight: '100vh' } 
-      : { height: '100vh', overflow: 'hidden' })
+      ? { height: 'auto', minHeight: '100%' } 
+      : { height: '100%', overflow: 'hidden' })
   ];
   
   return (
