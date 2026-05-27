@@ -2,12 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity, ScrollView, Platform } from 'react-native';
 
 export default function OrangeLayout({ children, title, subtitle, showHeader = true, scrollable = true, onLogout }) {
-  const Container = scrollable ? ScrollView : View;
+  // Use native browser window scrollbar on Web (by using View instead of ScrollView), and ScrollView on mobile devices
+  const Container = (scrollable && Platform.OS !== 'web') ? ScrollView : View;
   
-  // Constrain height on web so internal ScrollView scrolls correctly instead of stretching infinitely
+  // Bounded safeArea: allow natural window scrolling when scrollable is true, and lock to viewport when scrollable is false (e.g. Trainee Workspace dashboard)
   const safeAreaStyle = [
     styles.safeArea,
-    Platform.OS === 'web' && { height: '100vh', overflow: 'hidden' }
+    Platform.OS === 'web' && (scrollable 
+      ? { height: 'auto', minHeight: '100vh' } 
+      : { height: '100vh', overflow: 'hidden' })
   ];
   
   return (
@@ -96,6 +99,12 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
+    ...Platform.select({
+      web: {
+        height: 'auto',
+        overflow: 'visible',
+      }
+    })
   },
   scrollContent: {
     padding: 20,

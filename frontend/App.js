@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Platform } from 'react-native';
 // Import Screens
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
@@ -16,6 +17,22 @@ import AdminScreen from './src/screens/AdminScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    if (Platform.OS === 'web' && typeof document !== 'undefined') {
+      const style = document.createElement('style');
+      style.id = 'web-scroll-override';
+      style.textContent = `
+        html, body, #root {
+          height: auto !important;
+          min-height: 100% !important;
+          overflow: auto !important;
+          overflow-y: auto !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
